@@ -1,0 +1,3 @@
+{
+    "CONNECTION_URL": "mongodb+srv://david1:david1@cluster0.q7cs7.mongodb.net/billing-app?retryWrites=true&w=majority"
+}

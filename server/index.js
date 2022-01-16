@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 
 const patientsInfo = require('./routes/patientInfo');
-const { application } = require('express');
+
 
 connectDB();
 

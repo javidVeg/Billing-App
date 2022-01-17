@@ -1,5 +1,6 @@
 import { Button, Paper, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
+import axios from "axios"
 
 const Info = () => {
     const [formData, setFormData] = useState({firstName: '', lastName: '', phoneNumber: ''})
@@ -7,6 +8,12 @@ const Info = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData)
+
+        try {
+            await axios.post("http://localhost:5001/api/patientsinfo/", formData)
+        } catch (error) {
+            console.log(error)
+        }
     }
         
   return (

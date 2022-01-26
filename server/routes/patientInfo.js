@@ -33,6 +33,7 @@ router.post('/', async (req, res) => {
         //     return res.status(400).send(error.detals[0].message);
 
         const patient = new PatientInfo({
+            
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             phoneNumber: req.body.phoneNumber,
@@ -55,6 +56,7 @@ router.put('/:id', async (req, res) => {
         const patientInfo = await PatientInfo.findByIdAndUpdate(
             req.params.id, 
             {
+                
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 phoneNumber: req.body.phoneNumber,

@@ -1,7 +1,6 @@
 import React, { useContext} from 'react';
 import { Paper, Typography, Grid } from "@mui/material";
-import { width } from '@mui/system';
-import { setDataContext } from '../../Context/setDataContext';
+
 
 
 export default function EntSubmit () {

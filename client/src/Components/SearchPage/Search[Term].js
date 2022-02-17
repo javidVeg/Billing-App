@@ -6,6 +6,7 @@ import TableService from '../../Service/TableService';
 import { useTable } from "react-table";
 import { useNavigate, useParams } from 'react-router-dom'
 import * as Realm from "realm-web"
+import { BSON } from "realm-web"
 
 
 // import { DataGrid, selectedGridRowsCountSelector } from '@mui/x-data-grid';
@@ -15,15 +16,17 @@ import * as Realm from "realm-web"
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import MaterialTable from 'material-table'
 
-    const SearchPatients = (props) => {
+    const SearchPatients = () => {
         const [formData, setFormData] = useState([]);
         const [searchFirstName, setSearchFirstName] = useState("");
-        const [searchTerms, setSearchTerms] = useState("");
+        const [searchTerms, setSearchTerms] = useState([""]);
         const [patients, setPatients] = useState([])
+        const [id, setId] = useState('')
         
         const listRef = useRef();
         const navigate = useNavigate();
         const params = useParams();
+        
        
 
         listRef.current = formData;
@@ -31,6 +34,7 @@ import * as Realm from "realm-web"
         // useEffect(() => {
         //     retrieveList();
         // }, []);
+        
 
         useEffect(async () => {
           const REALM_APP_ID = "application-0-xqcja";
@@ -38,7 +42,7 @@ import * as Realm from "realm-web"
           const credentials = Realm.Credentials.anonymous();
           try {
             const user = await app.logIn(credentials);
-            const searchPatients = await user.functions.searchPatient(params.firstName);
+            const searchPatients = await user.functions.searchPatient(params.firstName || params.lastName || params.phoneNumber || params._id);
             setPatients(() => searchPatients);
             console.log(searchPatients)
             
@@ -52,28 +56,41 @@ import * as Realm from "realm-web"
 
         }, [params])
         console.log(patients)
+
+        const findById = () => {
+            TableService.findByFirstName(searchFirstName)
+            .then((response) => {
+                setFormData(response.data)
+                console.log(response.data);
+                console.log(searchFirstName)
+            })
+            .catch((e) => {
+                console.log(e)
+            });
+        };
         
 //----------SEARCH TERM CREATED BELOW-----------//
-        // const handleSubmit = e => {
-        //   e.preventDefault();
-        //   navigate(`search/:${searchTerms}`)
+        const handleSubmit = e => {
+          e.preventDefault();
+          navigate(`search/:${searchTerms}`)
           
 
-        //   setSearchTerms(" ")
+          setSearchTerms(" ")
 
-        // }
+        }
 
-        // const onChangeSearchFirstName = (e) => {
-        //     const searchFirstName = e.target.value;
-        //     setSearchFirstName(searchFirstName);
-        //     console.log(searchFirstName)
-        // };
+        const onChangeSearchFirstName = (e) => {
+            const searchFirstName = e.target.value;
+            setSearchFirstName(searchFirstName);
+            console.log(searchFirstName)
+        };
         
 
         // const retrieveList = () => {
         //     TableService.getAll()
         //     .then((response) => {
         //         setFormData(response.data);
+                
         //     })
         //     .catch((e) => {
         //         console.log(e)
@@ -84,62 +101,66 @@ import * as Realm from "realm-web"
         //     retrieveList();
         // };
 
-        // const removeAllFormData = () => {
-        //     TableService.removeAll()
-        //     .then((response) => {
-        //         console.log(response.data);
-        //         refreshList();
-        //     })
-        //     .catch((e) => {
-        //         console.log(e);
-        //     });
-        // };
+       
 
-        // const findByFirstName = () => {
-        //     TableService.findByFirstName(searchFirstName)
-        //     .then((response) => {
-        //         setFormData(response.data)
-        //         console.log(response.data);
-        //         console.log(searchFirstName)
-        //     })
-        //     .catch((e) => {
-        //         console.log(e)
-        //     });
-        // };
+        const findByFirstName = () => {
+            TableService.findByFirstName(searchFirstName)
+            .then((response) => {
+                setFormData(response.data)
+                console.log(response.data);
+                console.log(searchFirstName)
+            })
+            .catch((e) => {
+                console.log(e)
+            });
+        };
  //----------PROGRAMMATIC NAVIGATION---------//  
         // const openFormData = (rowIndex) => {
         //     const id = listRef.current[rowIndex]._id;
         //     console.log(id)
 
-        //    navigate("/patientsinfo/" + id)
+        // navigate("/patientsinfo/" + id)
         // };
+        const openFormData = () => patients.map(({...patients}) => {
+            const id = patients._id;
+            navigate("/patientsinfo/" + id)
+            console.log(id)
+            });
 
-        // const deleteFormData = (rowIndex) => {
-        //     const id = listRef.current[rowIndex]._id;
-        //     console.log(id)
 
-        //     TableService.remove(id)
-        //     .then(response => {
+
+
+        const deleteFormData = (rowIndex) => {
+            const id = patients[0]._id
+            console.log(id)
+
+            TableService.remove(id)
+            .then(response => {
 //----------WORKING MOUNTED ISSUE----------//
                 
-//                 // navigate("/patientsinfo");
-//                 console.log(response.data)
+                // navigate("/patientsinfo");
+                console.log(response.data)
                 
-// //--------THIS ENABLES THE LIST TO REGENERATE WITHOUT THE DELETED ITEM----------//
-//                 let newFormData = [...listRef.current];
-//                 newFormData.splice(rowIndex, 1);
+//--------THIS ENABLES THE LIST TO REGENERATE WITHOUT THE DELETED ITEM----------//
+                let newFormData = [...listRef.current];
+                newFormData.splice(rowIndex, 1);
                 
-//                 setFormData(newFormData);
-//             })
-//             .catch((e) => {
-//                 console.log(e);
-//             });
-//         }
-// //TABLE ATTRIBUTES//
+                setFormData(newFormData);
+                navigate("/listAll")
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+        }
+//TABLE ATTRIBUTES//
 
       const columns = useMemo(
             () => [
-            
+            {
+                
+                Header: "ID",
+                accessor: "_id"
+            },
             {
                 Header: "First Name",
                 accessor: "firstName",
@@ -152,31 +173,6 @@ import * as Realm from "realm-web"
                 Header: "Phone Number",
                 accessor: "phoneNumber",
             },
-            {
-                Header: "Status",
-                accessor: "published",
-                Cell: (props) => {
-                return props.value ? "Published" : "Pending";
-                },
-            },
-            // {
-            //     Header: "Actions",
-            //     accessor: "actions",
-            //     Cell: (props) => {
-            //     const rowIdx = props.row.id;
-            //     return (
-            //         <div>
-            //         <button onClick={() => openFormData(rowIdx)}>
-            //             <i className="far fa-edit action mr-2"></i>
-            //         </button>
-
-            //         <button onClick={() => deleteFormData(rowIdx)}>
-            //             <i className="fas fa-trash action"></i>
-            //         </button>
-            //         </div>
-            //     );
-            //     },
-            // },
             ],
             []
         );
@@ -277,9 +273,7 @@ import * as Realm from "realm-web"
 
     return (
         // <div>
-        //     {patients && patients.map(patient =>{
-        //     return <p key= {patient._id}>{patient.lastName}{patient.firstName}</p>
-        //     })}
+        //     {JSON.stringify(patients[0]._id)}
         // </div>
 
     <div className="list row">
@@ -312,10 +306,10 @@ import * as Realm from "realm-web"
         </div>
       </div>
       <div className="col-md-12 list">
-        <table
-          className="table table-striped table-bordered"
-          {...getTableProps()}
-        >
+      
+    <table
+        className="table table-striped table-bordered"
+          {...getTableProps()}>
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
@@ -343,34 +337,14 @@ import * as Realm from "realm-web"
           </tbody>
         </table>
       </div>
-
-      {/* <div className="col-md-8">
-        <button className="btn btn-sm btn-danger" onClick={removeAllFormData}>
-          Remove All
-        </button>
-      </div> */}
+      <button onClick={() => openFormData()}>
+                        <i className="far fa-edit action mr-2"></i>
+                    </button>
+                    <button onClick={() => deleteFormData()}>
+                        <i className="fas fa-trash action"></i>
+                    </button>
+                    
     </div>
-
-
-        // <div style={{ height: 400, width: '100%' }}>
-          
-        //     <DataGrid
-        //         rows={list}
-        //         columns={columns}
-        //         getRowId = {(row) => row._id}
-        //         pageSize={5}
-        //         rowsPerPageOptions={[5]}
-        //         checkboxSelection
-        //         // onCellEditCommit={handleRowUpdate}
-                
-                
-        //         />
-
-
-                
-
-                
-        // </div>
         
     )
 

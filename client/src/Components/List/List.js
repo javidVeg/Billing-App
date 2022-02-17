@@ -18,7 +18,7 @@ import * as Realm from "realm-web"
     const List = (props) => {
         const [formData, setFormData] = useState([]);
         const [searchFirstName, setSearchFirstName] = useState("");
-        const [searchTerms, setSearchTerms] = useState("");
+        const [searchTerms, setSearchTerms] = useState('');
         const [patients, setPatients] = useState([])
         
         const listRef = useRef();
@@ -67,6 +67,7 @@ import * as Realm from "realm-web"
             TableService.getAll()
             .then((response) => {
                 setFormData(response.data);
+                console.log(response.data)
             })
             .catch((e) => {
                 console.log(e)
@@ -283,7 +284,7 @@ import * as Realm from "realm-web"
             className="form-control"
             placeholder="Search by First Name"
             value={searchTerms}
-            onChange={(e) => setSearchTerms(e.target.value)}
+            onChange={(e) => setSearchTerms(e.target.value.toLowerCase())}
           />
           </form>
           {/* <input

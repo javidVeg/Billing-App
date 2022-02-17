@@ -2,6 +2,7 @@ const PatientInfo  = require('../models/patientInfo');
 // const { PatientInfo, validate } = require('../models/patientInfo')
 const express = require('express');
 const router = express.Router();
+const Crypto =require('crypto')
 
 router.get('/', async (req, res) => {
     try {
@@ -33,9 +34,20 @@ router.post('/', async (req, res) => {
         // const { error } = validate(req, res);
         // if (error)
         //     return res.status(400).send(error.detals[0].message);
+        function randomString(size = 21) {  
+            return Crypto
+              .randomBytes(size)
+              .toString('hex')
+              .slice(0, size)
+          }
+          
+          console.log(  
+            randomString()
+          )
 
         const patient = new PatientInfo({
             
+            _id: randomString(),
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             phoneNumber: req.body.phoneNumber,

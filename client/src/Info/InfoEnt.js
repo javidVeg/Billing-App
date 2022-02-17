@@ -41,9 +41,9 @@ const Info = () => {
 
     const saveFormData = () => {
         var data = {
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            phoneNumber: formData.phoneNumber,
+            firstName: formData.firstName.toLowerCase(),
+            lastName: formData.lastName.toLowerCase(),
+            phoneNumber: formData.phoneNumber.toLowerCase(),
             
         };
 

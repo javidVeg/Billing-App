@@ -336,34 +336,8 @@ import * as Realm from "realm-web"
           </tbody>
         </table>
       </div>
-
-      <div className="col-md-8">
-        <button className="btn btn-sm btn-danger" onClick={removeAllFormData}>
-          Remove All
-        </button>
-      </div>
     </div>
 
-
-        // <div style={{ height: 400, width: '100%' }}>
-          
-        //     <DataGrid
-        //         rows={list}
-        //         columns={columns}
-        //         getRowId = {(row) => row._id}
-        //         pageSize={5}
-        //         rowsPerPageOptions={[5]}
-        //         checkboxSelection
-        //         // onCellEditCommit={handleRowUpdate}
-                
-                
-        //         />
-
-
-                
-
-                
-        // </div>
         
     )
 

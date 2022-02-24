@@ -57,5 +57,8 @@
     "fs": false,
     "path": false,
     "os": false
+  },
+  "devDependencies": {
+    "@iconify/react": "^3.1.3"
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography } from "@mui/material";
-import SignIn from '../Sign In/SignIn';
-import SignUp from '../Register/Register.js';
+import SignIn from '../Components/Sign In/SignIn.js';
+import SignUp from '../Components/Register/Register'
 
 
 export default function Home () {

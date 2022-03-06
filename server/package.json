@@ -4,8 +4,10 @@
   "description": "server for billing app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon server/index.js",
+    "server": "nodemon server/index.js",
+    "client": "npm start --prefix client"
+
   },
   "author": "",
   "license": "ISC",

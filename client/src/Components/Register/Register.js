@@ -15,57 +15,34 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Icon } from '@iconify/react';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const theme = createTheme();
 
 export default function SignUp() {
 
 //------------NEW-------------//
-const initialFormState = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: ""
-};
-const [formData, setFormData] = useState(initialFormState);
-const [submitted, setSubmitted] = useState(false);
-// const navigate = useNavigate();
 
+const [formData, setFormData] = useState({
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  password2: ''
+});
 
-// const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     console.log(formData)
-//     navigate("/entSubmit")
+const { firstName, lastName, email, password, password2} = formData
+
+const onChange = (e) => {
  
-
-//     try {
-//         await axios.post("http://localhost:5001/api/patientsinfo/", formData)
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
-
-const handleInputChange = e => {
-  e.preventDefault();
-  const { name, value } = e.target;
-  setFormData({ ...formData, [name]: value })
- 
+  setFormData((prevState) => ({
+    ...prevState,
+    [e.target.name]: e.target.value,
+  }))
 };
 
-const saveFormData = (e) => {
+const onSubmit = (e) => {
   e.preventDefault();
   var data = {
      
@@ -85,7 +62,7 @@ TableService.register(data)
       email: response.data.email,
       password: response.data.password
   });
-  setSubmitted(true);
+  
   console.log(response.data);
   localStorage.setItem("token")
 })
@@ -127,12 +104,12 @@ TableService.register(data)
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+          <Icon icon="mdi:toothbrush-paste" width= "30px" height= "30px" />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Register
           </Typography>
-          <Box component="form" noValidate onSubmit={saveFormData} sx={{ mt: 3 }}>
+          <Box component="form" noValidate onSubmit={onSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -143,7 +120,8 @@ TableService.register(data)
                   id="firstName"
                   label="First Name"
                   autoFocus
-                  onChange={handleInputChange}
+                  value={firstName}
+                  onChange={onChange}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -154,7 +132,8 @@ TableService.register(data)
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
-                  onChange={handleInputChange}
+                  value={lastName}
+                  onChange={onChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -165,7 +144,8 @@ TableService.register(data)
                   label="Email Address"
                   name="email"
                   autoComplete="email"
-                  onChange={handleInputChange}
+                  value={email}
+                  onChange={onChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -177,7 +157,21 @@ TableService.register(data)
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                  onChange={handleInputChange}
+                  value={password}
+                  onChange={onChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password2"
+                  label="Confirm Password"
+                  type="password2"
+                  id="password2"
+                  autoComplete="new-password2"
+                  value={password2}
+                  onChange={onChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -191,7 +185,7 @@ TableService.register(data)
               type="submit"
               fullWidth
               variant="contained"
-              onClick={saveFormData} 
+              onClick={onSubmit} 
               sx={{ mt: 3, mb: 2 }}
             >
               Sign Up
@@ -205,7 +199,7 @@ TableService.register(data)
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
+        
       </Container>
     </ThemeProvider>
   );

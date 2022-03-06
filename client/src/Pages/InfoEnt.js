@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
 import EntSubmit from "../Components/EntSubmit/EntSubmit";
-import Home from "../Components/Home/Home";
+import Home from "./Home";
 import TableService from "../Service/TableService";
 
 

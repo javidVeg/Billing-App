@@ -2,7 +2,7 @@
 import { Tab, Table } from '@mui/material';
 import * as React from 'react';
 import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
-import TableService from '../../Service/TableService';
+import TableService from '../Service/TableService';
 import { useTable } from "react-table";
 import { useNavigate } from 'react-router-dom'
 import * as Realm from "realm-web"

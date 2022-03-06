@@ -3,7 +3,7 @@ import { Outlet } from 'react-router'
 import SignIn from './Sign In/SignIn'
 
 const useAuth = () => {
-    const user = { loggedIn: false }
+    const user = { loggedIn: true }
     return user && user.loggedIn
 }
 

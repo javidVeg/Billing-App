@@ -28,7 +28,7 @@ export default function NavBar() {
             Billing App
           </Typography>
           
-              <Link to="/home">
+              {/* <Link to="/home">
                   <Button sx= {{color: "white"}}>Home</Button>
                   </Link>
               <Link to="/patientAdd">
@@ -36,7 +36,16 @@ export default function NavBar() {
                   </Link>
               <Link to="/listAll">
                   <Button sx= {{color: "white"}}>List All</Button>
+                  </Link> */}
+               <Link to='/login'>
+                  <Button sx= {{color: "white"}}>Log In</Button>
                   </Link>
+              <Link to='/register'>   
+                  <Button sx= {{color: "white"}}>Register</Button>
+                  </Link>
+              
+
+             
          
         </Toolbar>
       </AppBar>

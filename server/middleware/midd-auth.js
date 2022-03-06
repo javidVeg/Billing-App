@@ -1,18 +1,35 @@
 const jwt = require('jsonwebtoken');
-const config = require('config');
+const asyncHandler = require('express-async-handler')
+const User = require('../models/user')
+const config = require('config')
 
-function auth(req, res, next) {
+const protect = asyncHandler(async(req, res, next) => {
+    let token
 
-    const token = req.header('x-auth-token');
-    if(!token) return res.status(401).send('Access denied. No token provided.');
+    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
+        try {
+            // Get toekn from header
+            token = req.headers.authorization.split(' ')[1]
 
-    try {
-        const decoded = jwt.verify(token, config.get('jwtSecret'));
-        req.user = decoded;
-        return next();
-    }   catch (ex) {
-        return res.status(400).send('invalid token');
+            // Verify token from header
+            const decoded = jwt.verify(token, config.get('jwtSecret'))
+
+            // Get user from the token from the ID in header
+            req.user = await User.findById(decoded.id).select('-password')
+
+            next()
+
+
+        } catch (error) {
+            console.log(error)
+            res.status(401)
+            throw new Error('Not authorized')
+            
+        }
     }
-}
-
-module.exports = auth;
+    if(!token) {
+        res.status(401)
+        throw new Error('Not authorized, no token')
+    }
+})
+ module.exports = { protect }

@@ -4,12 +4,11 @@ const bcrypt = require('bcrypt')
 const express = require('express');
 const router = express.Router();
 const Crypto = require('crypto')
-const auth = require('../middleware/midd-auth')
 const admin = require('../middleware/Midd-admin')
 // const { PatientInfo, validate } = require('../models/patientInfo')
 
 
-router.get('/', auth,  async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const patientsInfo = await PatientInfo.find();
         return res.send(patientsInfo);
@@ -18,7 +17,7 @@ router.get('/', auth,  async (req, res) => {
     }
 });
 
-router.get('/:id', auth,  async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         const patientInfo = await PatientInfo.findById(req.params.id);
 
@@ -34,7 +33,7 @@ router.get('/:id', auth,  async (req, res) => {
 
 
 
-router.post('/', auth, async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         // const { error } = validate(req, res);
         // if (error)
@@ -108,7 +107,7 @@ router.post('/', auth, async (req, res) => {
 //     }
 // });
 
-router.put('/:id', auth,  async (req, res) => {
+router.put('/:id', async (req, res) => {
     try {
         // const { error } = validate(req.body);
         // if (error) return res.status(400).send(error);
@@ -135,7 +134,7 @@ router.put('/:id', auth,  async (req, res) => {
     }
 });
 
-router.delete('/:id', [auth, admin], async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try{
         const patientInfo = await PatientInfo.findByIdAndRemove(req.params.id);
 

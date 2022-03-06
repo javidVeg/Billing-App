@@ -29,13 +29,13 @@ export default function NavBar() {
           </Typography>
           
               <Link to="/home">
-                  <Button color="inherit">Home</Button>
+                  <Button sx= {{color: "white"}}>Home</Button>
                   </Link>
               <Link to="/patientAdd">
-                  <Button color="inherit">Add New</Button>
+                  <Button sx= {{color: "white"}}>Add New</Button>
                   </Link>
               <Link to="/listAll">
-                  <Button color="inherit">List All</Button>
+                  <Button sx= {{color: "white"}}>List All</Button>
                   </Link>
          
         </Toolbar>

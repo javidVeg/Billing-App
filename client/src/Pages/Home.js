@@ -4,12 +4,13 @@ import SignIn from '../Components/Sign In/SignIn.js';
 import SignUp from '../Components/Register/Register'
 
 
-export default function Home () {
+const Home = () => {
 
     return (
         <div>
-        <SignUp/>
-        <SignIn />
+        Registered!
         </div>
     )
 }
+
+export default Home

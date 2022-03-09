@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import TableService from '../../Service/TableService';
 import Avatar from '@mui/material/Avatar';
@@ -16,6 +16,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Icon } from '@iconify/react';
+import { useSelector, useDispatch  } from 'react-redux';
+import { toast } from 'react-toastify'
+import { register, reset } from '../../Features/auth/authSlice'
 
 
 const theme = createTheme();
@@ -25,14 +28,29 @@ export default function SignUp() {
 //------------NEW-------------//
 
 const [formData, setFormData] = useState({
-  firstName: '',
-  lastName: '',
+  name: '',
   email: '',
   password: '',
   password2: ''
 });
 
-const { firstName, lastName, email, password, password2} = formData
+const { name, email, password, password2 } = formData
+
+const navigate = useNavigate()
+const dispatch = useDispatch()
+const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth )
+
+useEffect(() => {
+  if(isError) {
+    toast.error(message)
+  }
+
+  if(isSuccess || user) {
+    navigate('/')
+  }
+  dispatch(reset())
+
+},[user, isError, isSuccess, message, navigate, dispatch])
 
 const onChange = (e) => {
  
@@ -44,31 +62,44 @@ const onChange = (e) => {
 
 const onSubmit = (e) => {
   e.preventDefault();
-  var data = {
-     
-      firstName: formData.firstName.toLowerCase(),
-      lastName: formData.lastName.toLowerCase(),
-      email: formData.email.toLowerCase(),
-      password: formData.password
-};
-console.log(data)
 
-TableService.register(data)
-.then(response => {
-  setFormData({
+  if(password !== password2) {
+    toast.error('passwords do not match')
+  } else {
+    const userData = {
+      name,
+      email,
+      password,
+    }
+
+    dispatch(register(userData))
+    console.log(userData)
+  }
+//   var data = {
+     
+//       firstName: formData.firstName.toLowerCase(),
+//       lastName: formData.lastName.toLowerCase(),
+//       email: formData.email.toLowerCase(),
+//       password: formData.password
+// };
+// console.log(data)
+
+// TableService.register(data)
+// .then(response => {
+//   setFormData({
     
-      firstName: response.data.firstName,
-      lastName: response.data.lastName,
-      email: response.data.email,
-      password: response.data.password
-  });
+//       firstName: response.data.firstName,
+//       lastName: response.data.lastName,
+//       email: response.data.email,
+//       password: response.data.password
+//   });
   
-  console.log(response.data);
-  localStorage.setItem("token")
-})
-.catch(e => {
-  console.log(e)
-});
+//   console.log(response.data);
+//   localStorage.setItem("token")
+// })
+// .catch(e => {
+//   console.log(e)
+// });
 }
 //----------------------------//
 
@@ -111,7 +142,7 @@ TableService.register(data)
           </Typography>
           <Box component="form" noValidate onSubmit={onSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
                   name="firstName"
@@ -123,8 +154,8 @@ TableService.register(data)
                   value={firstName}
                   onChange={onChange}
                 />
-              </Grid>
-              <Grid item xs={12} sm={6}>
+              </Grid> */}
+              {/* <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
@@ -133,6 +164,18 @@ TableService.register(data)
                   name="lastName"
                   autoComplete="family-name"
                   value={lastName}
+                  onChange={onChange}
+                />
+              </Grid> */}
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="name"
+                  label="Name"
+                  name="name"
+                  autoComplete="family-name"
+                  value={name}
                   onChange={onChange}
                 />
               </Grid>
@@ -167,7 +210,7 @@ TableService.register(data)
                   fullWidth
                   name="password2"
                   label="Confirm Password"
-                  type="password2"
+                  type="password"
                   id="password2"
                   autoComplete="new-password2"
                   value={password2}

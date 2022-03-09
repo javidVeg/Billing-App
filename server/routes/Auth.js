@@ -6,7 +6,7 @@ const Crypto = require('crypto')
 const { registerUser, logInUser, getME } = require('../controllers/userControllers')
 const { protect } = require('../middleware/midd-auth')
 
-router.post('/', registerUser)
+router.post('/register', registerUser)
 router.post('/login', logInUser)
 router.get('/me', protect, getME)
 // //-------------REGISTERS A NEW USER------------//

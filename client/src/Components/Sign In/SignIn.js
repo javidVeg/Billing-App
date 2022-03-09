@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import TableService from '../../Service/TableService';
 import Avatar from '@mui/material/Avatar';
@@ -16,6 +16,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Icon } from '@iconify/react';
+import { useSelector, useDispatch  } from 'react-redux';
+import { toast } from 'react-toastify'
+import { login, reset } from '../../Features/auth/authSlice'
 
 
 const theme = createTheme();
@@ -33,6 +36,22 @@ const [formData, setFormData] = useState({
 
 const { email, password } = formData
 
+const navigate = useNavigate()
+const dispatch = useDispatch()
+const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth )
+
+useEffect(() => {
+  if(isError) {
+    toast.error(message)
+  }
+
+  if(isSuccess || user) {
+    navigate('/')
+  }
+  dispatch(reset())
+
+},[user, isError, isSuccess, message, navigate, dispatch])
+
 const onChange = (e) => {
  
   setFormData((prevState) => ({
@@ -43,27 +62,34 @@ const onChange = (e) => {
 
 const onSubmit = (e) => {
   e.preventDefault();
-  var data = {
-     
-      email: formData.email.toLowerCase(),
-      password: formData.password
-};
-console.log(data)
 
-TableService.register(data)
-.then(response => {
-  setFormData({
+  const userData = {
+    email,
+    password,
+  }
+
+  dispatch(login(userData))
+//   var data = {
+     
+//       email: formData.email.toLowerCase(),
+//       password: formData.password
+// };
+// console.log(data)
+
+// TableService.register(data)
+// .then(response => {
+//   setFormData({
     
-      email: response.data.email,
-      password: response.data.password
-  });
+//       email: response.data.email,
+//       password: response.data.password
+//   });
   
-  console.log(response.data);
-  localStorage.setItem("token")
-})
-.catch(e => {
-  console.log(e)
-});
+//   console.log(response.data);
+//   localStorage.setItem("token")
+// })
+// .catch(e => {
+//   console.log(e)
+// });
 }
 //----------------------------//
 

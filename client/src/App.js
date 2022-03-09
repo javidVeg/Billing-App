@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { Button, Container, Typography } from "@mui/material";
 import Info from "./Pages/InfoEnt"
 import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
@@ -18,6 +20,7 @@ import Register from './Pages/Register';
 import Login from './Pages/Login';
 
 
+
 function App() {
 
 
@@ -26,7 +29,7 @@ function App() {
       <Container>
         <NavBar />
         <Routes>
-          <Route path="/" element={() => <Navigate to= "/home" /> } />
+          <Route path="/" element={<Navigate to= "/home" /> } />
           {/* <Route path="/SignIn" element={<SignIn/ >} /> */}
           <Route path="/home" element={<Home/>}/>
           <Route path="/register" element={<Register/>}/>
@@ -40,6 +43,7 @@ function App() {
           <Route path="/listAll/search/:firstName" element={<SearchPatients/>} />
           </Route>
         </Routes>
+        <ToastContainer />
       </Container>
     </div>
     

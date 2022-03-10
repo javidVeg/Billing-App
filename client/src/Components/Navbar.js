@@ -19,7 +19,7 @@ export default function NavBar() {
   const onLogout = () => {
     dispatch(logout())
     dispatch(reset())
-    navigate('/login')
+    navigate('/somelandingpage')
   }
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -37,9 +37,20 @@ export default function NavBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Billing App
           </Typography>
-              {user ? (<Link to='/logout'>
+              {user ? (
+                <>
+                  <Link to="/home">
+                    <Button sx= {{color: "white"}}>Home</Button>
+                  </Link>
+                  <Link to="/patientAdd">
+                    <Button sx= {{color: "white"}}>Add New</Button>
+                  </Link>
+                  <Link to="/listAll">
+                    <Button sx= {{color: "white"}}>List All</Button>
+                  </Link>
                   <Button sx= {{color: "white"}} onClick={onLogout}>Log Out</Button>
-                  </Link>) 
+                  </>
+                  ) 
                   : (<>
                       <Link to='/login'>
                         <Button sx= {{color: "white"}}>Log In</Button>
@@ -49,15 +60,7 @@ export default function NavBar() {
                       </Link>
                     </>)}
           
-              {/* <Link to="/home">
-                  <Button sx= {{color: "white"}}>Home</Button>
-                  </Link>
-              <Link to="/patientAdd">
-                  <Button sx= {{color: "white"}}>Add New</Button>
-                  </Link>
-              <Link to="/listAll">
-                  <Button sx= {{color: "white"}}>List All</Button>
-                  </Link> */}
+              
               
               
 

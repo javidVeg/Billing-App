@@ -44,11 +44,13 @@ useEffect(() => {
   if(isError) {
     toast.error(message)
   }
-
+//@ ISSUE: cannot route back to register and login page because it navigates back "/" because if statment still true
   if(isSuccess || user) {
     navigate('/')
   }
+ 
   dispatch(reset())
+ 
 
 },[user, isError, isSuccess, message, navigate, dispatch])
 

@@ -40,11 +40,12 @@ const navigate = useNavigate()
 const dispatch = useDispatch()
 const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth )
 
+
 useEffect(() => {
   if(isError) {
     toast.error(message)
   }
-
+//@ ISSUE: cannot route back to register and login page because it navigates back "/" because if statment still true
   if(isSuccess || user) {
     navigate('/')
   }

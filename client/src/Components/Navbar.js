@@ -14,6 +14,8 @@ import { logout, reset } from "../Features/auth/authSlice";
 export default function NavBar() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  
+//? useSelector brings in the user state and allows for the Protected routes to be accessed.//
   const { user } =useSelector((state) => state.auth)
 
   const onLogout = () => {
@@ -41,6 +43,9 @@ export default function NavBar() {
                 <>
                   <Link to="/home">
                     <Button sx= {{color: "white"}}>Home</Button>
+                  </Link>
+                  <Link to="/messageBoard">
+                    <Button sx= {{color: "white"}}>Message Board</Button>
                   </Link>
                   <Link to="/patientAdd">
                     <Button sx= {{color: "white"}}>Add New</Button>

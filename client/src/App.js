@@ -18,6 +18,7 @@ import SignIn from './Components/Sign In/SignIn';
 import ProtectedRoutes from './Components/ProtectedRoutes';
 import Register from './Pages/Register';
 import Login from './Pages/Login';
+import MessageBoard from './Pages/MessageBoard';
 
 
 
@@ -36,6 +37,7 @@ function App() {
           <Route path="/login" element={<Login/>}/>
           // DOES: this is a protected Route that redirects based on if the user is Authorized or not
           <Route element={<ProtectedRoutes />}>
+          <Route path="/messageBoard" element={<MessageBoard/>} />
           <Route path="/patientAdd" element={<Info/>} />
           <Route path="/listAll" element={<List/>} />
           <Route path="/entSubmit" element={<EntSubmit/>} />
